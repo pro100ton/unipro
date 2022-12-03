@@ -1,15 +1,8 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
+from constants import DB_NAME, DB_USERNAME, DB_USER_PASSWORD
 
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
-
-with engine.connect() as conn:
-    result = conn.execute(text("select 'hello world'"))
-    print(result.all())
-    conn.execute(text("CREATE TABLE some_table (x int, y int)"))
-    conn.execute(
-            text("INSERT INTO some_table (x, y) VALUES (:x, :y)"),
-            [{"x": 1, "y": 1}, {"x": 2, "y": 4}],
-            )
-#    result = conn.execute(text("SELECT * FROM some_table"))
-#    print(result)
-
+engine = create_engine(f'postgresql+psycopg2://{DB_USERNAME}:'+
+                       f'{DB_USER_PASSWORD}@localhost/{DB_NAME}', 
+                       future=True, 
+                       echo=True)
+engine.connect()
